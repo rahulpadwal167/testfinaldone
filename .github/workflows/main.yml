@@ -3,7 +3,7 @@ name: Git Workflow
 on:
   push:
     branches:
-      - main
+      - 6.x
 
 jobs:
   git_commands:
