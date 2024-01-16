@@ -1,0 +1,47 @@
+name: Git Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  git_commands:
+    runs-on: ubuntu-latest
+
+    env:
+      ORIGINAL_REPO: https://github.com/LaravelCollective/html.git
+      NEW_REPO: https://github.com/rahulpadwal167/finaltest.git
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Clone bare repository
+      run: git clone --bare $ORIGINAL_REPO
+
+    - name: List files in the cloned repository
+      run: |
+        cd html.git
+        ls
+
+    - name: Display remotes before changing
+      run: git remote -v
+
+    - name: Change remote URL
+      run: git remote set-url origin $NEW_REPO
+
+    - name: Display remotes after changing
+      run: git remote -v
+
+    - name: Push changes to the new repository
+      run: git push --mirror $NEW_REPO
+
+    - name: Fetch tags from the original repository
+      run: git fetch origin --tags
+
+    - name: List tags in the cloned repository
+      run: git tag -l
+
+    - name: Count the number of tags
+      run: git tag -l | wc -l
