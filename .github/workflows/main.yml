@@ -3,22 +3,22 @@ name: Git Workflow
 on:
   push:
     branches:
-      - 6.x
+      - main
 
 jobs:
   git_commands:
     runs-on: ubuntu-latest
 
-    env:
-      ORIGINAL_REPO: https://github.com/LaravelCollective/html.git
-      NEW_REPO: https://github.com/rahulpadwal167/finaltest.git
+    strategy:
+      matrix:
+        node-version: [16.x]
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
     - name: Clone bare repository
-      run: git clone --bare $ORIGINAL_REPO
+      run: git clone --bare https://github.com/LaravelCollective/html.git
 
     - name: List files in the cloned repository
       run: |
@@ -29,13 +29,13 @@ jobs:
       run: git remote -v
 
     - name: Change remote URL
-      run: git remote set-url origin $NEW_REPO
+      run: git remote set-url origin https://github.com/rahulpadwal167/finaltest.git
 
     - name: Display remotes after changing
       run: git remote -v
 
     - name: Push changes to the new repository
-      run: git push --mirror $NEW_REPO
+      run: git push --mirror https://github.com/rahulpadwal167/finaltest.git
 
     - name: Fetch tags from the original repository
       run: git fetch origin --tags
